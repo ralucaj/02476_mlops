@@ -3,7 +3,7 @@ import numpy as np
 
 def mnist():
     # exchange with the corrupted mnist dataset
-    filepath = 'data/corruptmnist'
+    filepath = './data/corruptmnist'
     data_files = [f'{filepath}/train_{idx}.npz' for idx in range(5)]
     train = {'images': [], 'labels': []}
 

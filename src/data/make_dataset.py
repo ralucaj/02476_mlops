@@ -3,6 +3,10 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+import numpy as np
+import torch
+import glob
+from torchvision import transforms
 
 
 @click.command()
@@ -14,6 +18,32 @@ def main(input_filepath, output_filepath):
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
+    data_files = glob.glob(f'{input_filepath}/train_*.npz')
+
+    train = {'images': [], 'labels': []}
+    for data_file in data_files:
+        with np.load(data_file) as data:
+            train['images'].append(data['images'])
+            train['labels'].append(data['labels'])
+    test = np.load(f'{input_filepath}/test.npz')
+
+    train['images'] = np.concatenate(train['images'], axis=0)
+    train['labels'] = np.concatenate(train['labels'], axis=0)
+
+    # Turn to dict and remove unwanted keys
+    train = {
+        'images': torch.tensor(train['images']).float(),
+        'labels': torch.tensor([train['labels']]).squeeze()
+    }
+
+    test = {
+        'images': torch.tensor(test['images']).float(),
+        'labels': torch.tensor(test['labels']).squeeze()
+    }
+
+    torch.save(train, f'{output_filepath}/train.pt')
+    torch.save(test, f'{output_filepath}/test.pt')
+    return train, test
 
 
 if __name__ == '__main__':

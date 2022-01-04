@@ -55,3 +55,36 @@ Project Organization
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+
+Requirements prep:
+```
+make requirements  # install everything in the requirements.py file
+```
+
+Data prep:
+```
+ make data  # runs the make_dataset.py file
+ make clean  # clean __pycache__ files
+```
+Reads the `.npz` files in `data/raw` and transforms them into pytorch tensors in `data/processed`. 
+
+Train model: 
+```
+make train
+```
+Trains the model using the data from `data/processed/train.pt` using the architecture defined in `src/models/model.py`.
+Saves the trained model in `models/model.pth` and the training loss curve in `reports/figures/training_loss.png`.
+
+Predict:
+```
+python src/models/predict_model.py \
+     models/model.pt \  # file containing a pretrained model
+     data/example_images.npy
+```
+Saves the class prediction for each image in `./predictions.pt`.
+
+Visualize:
+```
+ python src/visualization/visualize.py "./models/model.pth"
+```
+Creates a T-SNE visualization of the last feature layer for the test set in `./figures/tsne.png`
