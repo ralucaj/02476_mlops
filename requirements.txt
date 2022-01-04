@@ -13,3 +13,5 @@ torch
 torchvision
 matplotlib
 scikit-learn
+isort
+black
