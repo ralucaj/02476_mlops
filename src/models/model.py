@@ -3,15 +3,15 @@ from torch import nn
 
 
 class MyAwesomeModel(nn.Module):
-    def __init__(self):
+    def __init__(self, cfg):
         super().__init__()
-        self.fc1 = nn.Linear(784, 256)
-        self.fc2 = nn.Linear(256, 128)
-        self.fc3 = nn.Linear(128, 64)
-        self.fc4 = nn.Linear(64, 10)
+        self.fc1 = nn.Linear(cfg.x_dim, cfg.hidden_dim)
+        self.fc2 = nn.Linear(cfg.hidden_dim, cfg.hidden_dim_2)
+        self.fc3 = nn.Linear(cfg.hidden_dim_2, cfg.hidden_dim_3)
+        self.fc4 = nn.Linear(cfg.hidden_dim_3, cfg.output_dim)
 
         # Dropout module with 0.2 drop probability
-        self.dropout = nn.Dropout(p=0.2)
+        self.dropout = nn.Dropout(p=cfg.dropout)
 
     def forward(self, x):
         # make sure input tensor is flattened

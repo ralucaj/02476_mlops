@@ -3,23 +3,27 @@ import numpy as np
 import torch
 from model import MyAwesomeModel
 from torch import nn, optim
+import hydra
+import logging
+log = logging.getLogger(__name__)
 
 
-def train(model_name="model"):
+@hydra.main(config_path="configs", config_name="mnist_config.yaml")
+def train(cfg):
     print("Training day and night")
-    model = MyAwesomeModel()
-    train_set = torch.load("./data/processed/train.pt")
+    model = MyAwesomeModel(cfg.model)
+    train_set = torch.load(cfg.training.train_set)
 
     criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.003)
+    optimizer = optim.Adam(model.parameters(), lr=cfg.training.lr)
 
-    epochs = 30
+    epochs = cfg.training.epochs
 
     train_losses = []
     for e in range(epochs):
         model.train()
         running_loss = 0
-        batch_size = 100
+        batch_size = cfg.training.batch_size
         for batch in range(len(train_set["images"]) // batch_size):
             optimizer.zero_grad()
 
@@ -36,17 +40,17 @@ def train(model_name="model"):
             running_loss += loss.item()
         train_losses.append(running_loss)
 
-        print(f"Epoch {e}: Training loss {np.mean(train_losses)}\n")
+        logging.info(f"Epoch {e}: Training loss {np.mean(train_losses)}\n")
 
     # Save training
     plt.plot(range(len(train_losses)), train_losses)
     plt.title("Training loss")
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
-    plt.savefig("./reports/figures/training_loss.png")
+    plt.savefig(cfg.training.figures_path)
 
     # Save model
-    torch.save(model.state_dict(), f"./models/{model_name}.pth")
+    torch.save(model.state_dict(), cfg.training.model_path)
 
 
 train()
