@@ -88,3 +88,6 @@ Visualize:
  python src/visualization/visualize.py "./models/model.pth"
 ```
 Creates a T-SNE visualization of the last feature layer for the test set in `./figures/tsne.png`
+
+#### Wandb
+Report available [here](https://wandb.ai/ralucaj/02476_mlops-src_models/reports/Untitled-Report--VmlldzoxNDEwMzc5?accessToken=latws5d49t58l6rszu8e32k3kd3gky5swnadu7gn9h1q7j8ieblv95g9x112kt28)
