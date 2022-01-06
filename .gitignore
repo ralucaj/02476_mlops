@@ -91,3 +91,4 @@ target/
 
 # Models and runs
 outputs*
+wandb*

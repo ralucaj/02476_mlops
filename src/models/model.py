@@ -1,8 +1,9 @@
 import torch.nn.functional as F
-from torch import nn
+from torch import nn, optim
+from pytorch_lightning import LightningModule
 
 
-class MyAwesomeModel(nn.Module):
+class MyAwesomeModel(LightningModule):
     def __init__(self, cfg):
         super().__init__()
         self.fc1 = nn.Linear(cfg.x_dim, cfg.hidden_dim)
@@ -12,6 +13,9 @@ class MyAwesomeModel(nn.Module):
 
         # Dropout module with 0.2 drop probability
         self.dropout = nn.Dropout(p=cfg.dropout)
+
+        self.criterion = nn.CrossEntropyLoss()
+        self.optimizer = optim.Adam(self.parameters(), lr=cfg.lr)
 
     def forward(self, x):
         # make sure input tensor is flattened
@@ -26,3 +30,20 @@ class MyAwesomeModel(nn.Module):
         x = F.log_softmax(self.fc4(x), dim=1)
 
         return x
+
+    def training_step(self, batch, batch_idx):
+        data, target = batch
+        preds = self.forward(data)
+        loss = self.criterion(preds, target)
+        self.log('loss', loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        data, target = batch
+        preds = self.forward(data)
+        loss = self.criterion(preds, target)
+        self.log('valid_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        return self.optimizer

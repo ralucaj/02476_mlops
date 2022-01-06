@@ -1,53 +1,44 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+from torch.utils.data import DataLoader
+import torchvision.transforms as transforms
+
 from model import MyAwesomeModel
 from torch import nn, optim
 import hydra
+from pytorch_lightning import Trainer
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+
 import logging
 log = logging.getLogger(__name__)
+from src.data.mnist import CorruptedMNIST
 
 
 @hydra.main(config_path="configs", config_name="mnist_config.yaml")
 def train(cfg):
     print("Training day and night")
     model = MyAwesomeModel(cfg.model)
-    train_set = torch.load(cfg.training.train_set)
+    train_loader = DataLoader(CorruptedMNIST(cfg.training.train_set), batch_size=cfg.training.batch_size)
+    validation_loader = DataLoader(CorruptedMNIST(cfg.training.valid_set), batch_size=cfg.training.batch_size)
 
-    criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.parameters(), lr=cfg.training.lr)
-
-    epochs = cfg.training.epochs
-
-    train_losses = []
-    for e in range(epochs):
-        model.train()
-        running_loss = 0
-        batch_size = cfg.training.batch_size
-        for batch in range(len(train_set["images"]) // batch_size):
-            optimizer.zero_grad()
-
-            log_ps = model(
-                train_set["images"][batch * batch_size:(batch + 1) * batch_size]
-            )
-            loss = criterion(
-                log_ps,
-                train_set["labels"][batch * batch_size:(batch + 1) * batch_size],
-            )
-            loss.backward()
-            optimizer.step()
-
-            running_loss += loss.item()
-        train_losses.append(running_loss)
-
-        logging.info(f"Epoch {e}: Training loss {np.mean(train_losses)}\n")
-
-    # Save training
-    plt.plot(range(len(train_losses)), train_losses)
-    plt.title("Training loss")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.savefig(cfg.training.figures_path)
+    early_stopping_callback = EarlyStopping(
+        monitor="valid_loss", patience=3, verbose=True, mode="min"
+    )
+    trainer = Trainer(
+        max_epochs=cfg.training.epochs,
+        accelerator='gpu',
+        gpus=1,
+        limit_train_batches=cfg.training.limit_train_batches,
+        callbacks=[early_stopping_callback]
+    )
+    trainer.fit(model, train_dataloaders=train_loader, val_dataloaders=validation_loader)
+    # # Save training
+    # plt.plot(range(len(train_losses)), train_losses)
+    # plt.title("Training loss")
+    # plt.xlabel("Epoch")
+    # plt.ylabel("Loss")
+    # plt.savefig(cfg.training.figures_path)
 
     # Save model
     torch.save(model.state_dict(), cfg.training.model_path)
