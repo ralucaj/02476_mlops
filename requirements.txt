@@ -18,3 +18,5 @@ black
 mypy
 hydra
 pillow
+pytorch_lightning
+wandb
