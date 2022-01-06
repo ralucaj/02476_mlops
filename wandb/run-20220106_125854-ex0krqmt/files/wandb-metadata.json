@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.10.60.1-microsoft-standard-WSL2-x86_64-with-glibc2.17",
+    "python": "3.8.12",
+    "heartbeatAt": "2022-01-06T11:58:55.800498",
+    "startedAt": "2022-01-06T11:58:54.743513",
+    "docker": null,
+    "gpu": "NVIDIA GeForce GTX 1650 Ti with Max-Q Design",
+    "gpu_count": 1,
+    "cpu_count": 4,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "src/models/vae_mnist_working.py",
+    "codePath": "src/models/vae_mnist_working.py",
+    "git": {
+        "remote": "git@github.com:ralucaj/02476_mlops.git",
+        "commit": "46bf0132fab39f87d10269071bdfb57bb447dfe3"
+    },
+    "email": "raluca.jalaboi@gmail.com",
+    "root": "/mnt/c/Users/raluca/Documents/source/02476_mlops",
+    "host": "yoga9",
+    "username": "raluca",
+    "executable": "/home/raluca/miniconda3/envs/mlops_w2/bin/python"
+}

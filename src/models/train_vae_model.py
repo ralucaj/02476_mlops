@@ -14,8 +14,8 @@ from torch.utils.data import DataLoader
 from vae_model import Encoder, Decoder, Model
 import hydra
 import logging
-log = logging.getLogger(__name__)
 
+log = logging.getLogger(__name__)
 
 # Model Hyperparameters
 dataset_path = '~/datasets'
@@ -30,13 +30,15 @@ def main(cfg):
     mnist_transform = transforms.Compose([transforms.ToTensor()])
 
     train_dataset = MNIST(dataset_path, transform=mnist_transform, train=True, download=True)
-    test_dataset  = MNIST(dataset_path, transform=mnist_transform, train=False, download=True)
+    test_dataset = MNIST(dataset_path, transform=mnist_transform, train=False, download=True)
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=cfg.hyperparameters.batch_size, shuffle=True)
-    test_loader  = DataLoader(dataset=test_dataset,  batch_size=cfg.hyperparameters.batch_size, shuffle=False)
+    test_loader = DataLoader(dataset=test_dataset, batch_size=cfg.hyperparameters.batch_size, shuffle=False)
 
-    encoder = Encoder(input_dim=cfg.hyperparameters.x_dim, hidden_dim=cfg.hyperparameters.hidden_dim, latent_dim=cfg.hyperparameters.latent_dim)
-    decoder = Decoder(latent_dim=cfg.hyperparameters.latent_dim, hidden_dim = cfg.hyperparameters.hidden_dim, output_dim = cfg.hyperparameters.x_dim)
+    encoder = Encoder(input_dim=cfg.hyperparameters.x_dim, hidden_dim=cfg.hyperparameters.hidden_dim,
+                      latent_dim=cfg.hyperparameters.latent_dim)
+    decoder = Decoder(latent_dim=cfg.hyperparameters.latent_dim, hidden_dim=cfg.hyperparameters.hidden_dim,
+                      output_dim=cfg.hyperparameters.x_dim)
 
     model = Model(Encoder=encoder, Decoder=decoder).to(DEVICE)
 
@@ -46,12 +48,11 @@ def main(cfg):
 
     def loss_function(x, x_hat, mean, log_var):
         reproduction_loss = nn.functional.binary_cross_entropy(x_hat, x, reduction='sum')
-        KLD      = - cfg.hyperparameters.kld_lambda * torch.sum(1+ log_var - mean.pow(2) - log_var.exp())
+        KLD = - cfg.hyperparameters.kld_lambda * torch.sum(1 + log_var - mean.pow(2) - log_var.exp())
 
         return reproduction_loss + KLD
 
     optimizer = Adam(model.parameters(), lr=cfg.hyperparameters.lr)
-
 
     print("Start training VAE...")
     model.train()
@@ -70,7 +71,8 @@ def main(cfg):
 
             loss.backward()
             optimizer.step()
-        log.info(f"\tEpoch {epoch + 1}, complete!\tAverage Loss: {overall_loss / (batch_idx*cfg.hyperparameters.batch_size)}")
+        log.info(
+            f"\tEpoch {epoch + 1}, complete!\tAverage Loss: {overall_loss / (batch_idx * cfg.hyperparameters.batch_size)}")
     log.info("Finish!!")
 
     # save weights
@@ -94,6 +96,7 @@ def main(cfg):
         generated_images = decoder(noise)
 
     save_image(generated_images.view(cfg.hyperparameters.batch_size, 1, 28, 28), 'generated_sample.png')
+
 
 if __name__ == "__main__":
     main()
