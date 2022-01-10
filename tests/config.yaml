@@ -1,0 +1,18 @@
+training:
+  batch_size: 100
+  epochs: 1
+  seed: 42
+  limit_train_batches: 0.01
+  model_path: "/mnt/c/Users/raluca/Documents/source/02476_mlops/models/trained_model.pt"
+  train_set: "/mnt/c/Users/raluca/Documents/source/02476_mlops/data/processed/train.pt"
+  valid_set: "/mnt/c/Users/raluca/Documents/source/02476_mlops/data/processed/test.pt"
+  figures_path: "/mnt/c/Users/raluca/Documents/source/02476_mlops/reports/figures/training_loss.png"
+
+model:
+  x_dim: 784
+  hidden_dim: 256
+  hidden_dim_2: 128
+  hidden_dim_3: 64
+  output_dim: 10
+  dropout: 0.2
+  lr: 1e-3
