@@ -7,16 +7,17 @@ class CorruptedMNIST(Dataset):
 
     def __init__(self, filepath):
         """
-        Corrupted dataset initializer. Reads data from filepath. Expects the data to be stored as the
-        output of src/data/make_dataset, as data['images'] and data['labels'].
+        Corrupted dataset initializer. Reads data from filepath. Expects the
+        data to be stored as the output of src/data/make_dataset, as data['images']
+        and data['labels'].
 
         :param filepath: location of the data saved as a PyTorch tensor
         """
         # Indexing
         self.filepath = filepath
         self.data = torch.load(filepath)
-        self.images = self.data['images']
-        self.labels = self.data['labels']
+        self.images = self.data["images"]
+        self.labels = self.data["labels"]
 
     def __len__(self):
         return len(self.images)
