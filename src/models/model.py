@@ -19,7 +19,7 @@ class MyAwesomeModel(LightningModule):
 
     def forward(self, x):
         if x.ndim != 3:
-            raise ValueError('Expected input to a 3D tensor')
+            raise ValueError("Expected input to a 3D tensor")
 
         # make sure input tensor is flattened
         x = x.view(x.shape[0], -1)
@@ -38,14 +38,14 @@ class MyAwesomeModel(LightningModule):
         data, target = batch
         preds = self.forward(data)
         loss = self.criterion(preds, target)
-        self.log('loss', loss)
+        self.log("loss", loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
         data, target = batch
         preds = self.forward(data)
         loss = self.criterion(preds, target)
-        self.log('valid_loss', loss)
+        self.log("valid_loss", loss)
         return loss
 
     def configure_optimizers(self):

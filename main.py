@@ -10,8 +10,8 @@ from data import mnist
 
 
 class TrainOREvaluate(object):
-    """ Helper class that will help launch class methods as commands
-        from a single script
+    """Helper class that will help launch class methods as commands
+    from a single script
     """
 
     def __init__(self):

@@ -4,7 +4,9 @@ import pytest
 import os
 
 
-@pytest.mark.skipif(not os.path.exists("data/processed/train.pt"), reason="Data files not found")
+@pytest.mark.skipif(
+    not os.path.exists("data/processed/train.pt"), reason="Data files not found"
+)
 def test_corrupted_mnist():
     data = CorruptedMNIST("data/processed/train.pt")
     assert len(data) == 40000, "Dataset did not have the correct number of samples"

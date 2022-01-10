@@ -15,8 +15,8 @@ class CorruptedMNIST(Dataset):
         # Indexing
         self.filepath = filepath
         self.data = torch.load(filepath)
-        self.images = self.data['images']
-        self.labels = self.data['labels']
+        self.images = self.data["images"]
+        self.labels = self.data["labels"]
 
     def __len__(self):
         return len(self.images)
