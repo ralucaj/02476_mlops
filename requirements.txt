@@ -17,6 +17,7 @@ isort
 black
 mypy
 hydra
+hydra-core
 pillow
 pytorch_lightning
 wandb
