@@ -18,6 +18,9 @@ class MyAwesomeModel(LightningModule):
         self.optimizer = optim.Adam(self.parameters(), lr=cfg.lr)
 
     def forward(self, x):
+        if x.ndim != 3:
+            raise ValueError('Expected input to a 3D tensor')
+
         # make sure input tensor is flattened
         x = x.view(x.shape[0], -1)
 

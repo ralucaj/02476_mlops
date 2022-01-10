@@ -19,6 +19,8 @@ from src.data.mnist import CorruptedMNIST
 def train(cfg):
     print("Training day and night")
     model = MyAwesomeModel(cfg.model)
+
+
     train_loader = DataLoader(CorruptedMNIST(cfg.training.train_set), batch_size=cfg.training.batch_size)
     validation_loader = DataLoader(CorruptedMNIST(cfg.training.valid_set), batch_size=cfg.training.batch_size)
 
@@ -33,12 +35,6 @@ def train(cfg):
         callbacks=[early_stopping_callback]
     )
     trainer.fit(model, train_dataloaders=train_loader, val_dataloaders=validation_loader)
-    # # Save training
-    # plt.plot(range(len(train_losses)), train_losses)
-    # plt.title("Training loss")
-    # plt.xlabel("Epoch")
-    # plt.ylabel("Loss")
-    # plt.savefig(cfg.training.figures_path)
 
     # Save model
     torch.save(model.state_dict(), cfg.training.model_path)
