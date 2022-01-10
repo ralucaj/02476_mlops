@@ -1,15 +1,17 @@
+import torch
+import torch.nn as nn
+import torchvision.transforms as transforms
+from torch.optim import Adam
+from torch.utils.data import DataLoader
+from torchvision.datasets import MNIST
+from torchvision.utils import save_image
+
 """
 Adapted from
 https://github.com/Jackson-Kang/Pytorch-VAE-tutorial/blob/master/01_Variational_AutoEncoder.ipynb
 
 A simple implementation of Gaussian MLP Encoder and Decoder trained on MNIST
 """
-import torch
-import torch.nn as nn
-import torchvision.transforms as transforms
-from torch.utils.data import DataLoader
-from torchvision.datasets import MNIST
-from torchvision.utils import save_image
 
 # Model Hyperparameters
 dataset_path = "datasets"
@@ -92,8 +94,6 @@ encoder = Encoder(input_dim=x_dim, hidden_dim=hidden_dim, latent_dim=latent_dim)
 decoder = Decoder(latent_dim=latent_dim, hidden_dim=hidden_dim, output_dim=x_dim)
 
 model = Model(Encoder=encoder, Decoder=decoder).to(DEVICE)
-
-from torch.optim import Adam
 
 BCE_loss = nn.BCELoss()
 

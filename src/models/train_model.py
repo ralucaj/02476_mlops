@@ -1,19 +1,15 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import torch
-from torch.utils.data import DataLoader
-import torchvision.transforms as transforms
-
-from model import MyAwesomeModel
-from torch import nn, optim
-import hydra
-from pytorch_lightning import Trainer
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-
 import logging
 
-log = logging.getLogger(__name__)
+import hydra
+import torch
+from model import MyAwesomeModel
+from pytorch_lightning import Trainer
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from torch.utils.data import DataLoader
+
 from src.data.mnist import CorruptedMNIST
+
+log = logging.getLogger(__name__)
 
 
 @hydra.main(config_path="configs", config_name="mnist_config.yaml")

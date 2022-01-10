@@ -1,4 +1,4 @@
-name: "Run linters"
+name: "Run flake8"
 
 on:
   push:

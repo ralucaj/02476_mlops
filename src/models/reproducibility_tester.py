@@ -1,6 +1,6 @@
 import sys
+
 import torch
-from vae_model import Model, Encoder, Decoder
 
 if __name__ == "__main__":
     print(sys.argv)

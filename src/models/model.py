@@ -1,6 +1,6 @@
 import torch.nn.functional as F
-from torch import nn, optim
 from pytorch_lightning import LightningModule
+from torch import nn, optim
 
 
 class MyAwesomeModel(LightningModule):

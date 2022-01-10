@@ -13,9 +13,9 @@ from src import models
 
 def visualize():
     """
-    Create a T-SNE visualization of the last fully connected layer of the network and saves it in `./figures/tsne.png`.
-    Uses the test data defined in `./data/processed/test.pt` to generate the visualization.
-    Expects a command line argument defining the model path.
+    Create a T-SNE visualization of the last fully connected layer of the network and saves
+    it in `./figures/tsne.png`. Uses the test data defined in `./data/processed/test.pt` to
+    generate the visualization. Expects a command line argument defining the model path.
 
     :param load_model_from: PyTorch model filepath from which the network should be read
     :return:

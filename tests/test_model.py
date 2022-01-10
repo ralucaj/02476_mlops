@@ -1,8 +1,9 @@
-from src.models.model import MyAwesomeModel
 import numpy as np
-from hydra import compose, initialize
 import pytest
 import torch
+from hydra import compose, initialize
+
+from src.models.model import MyAwesomeModel
 
 
 def test_model():

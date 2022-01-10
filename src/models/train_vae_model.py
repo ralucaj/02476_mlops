@@ -4,16 +4,17 @@ https://github.com/Jackson-Kang/Pytorch-VAE-tutorial/blob/master/01_Variational_
 
 A simple implementation of Gaussian MLP Encoder and Decoder trained on MNIST
 """
+import logging
 import os
+
+import hydra
 import torch
 import torch.nn as nn
-from torchvision.utils import save_image
-from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-from vae_model import Encoder, Decoder, Model
-import hydra
-import logging
+from torchvision.datasets import MNIST
+from torchvision.utils import save_image
+from vae_model import Decoder, Encoder, Model
 
 log = logging.getLogger(__name__)
 
@@ -58,8 +59,6 @@ def main(cfg):
 
     from torch.optim import Adam
 
-    BCE_loss = nn.BCELoss()
-
     def loss_function(x, x_hat, mean, log_var):
         reproduction_loss = nn.functional.binary_cross_entropy(
             x_hat, x, reduction="sum"
@@ -89,9 +88,8 @@ def main(cfg):
 
             loss.backward()
             optimizer.step()
-        log.info(
-            f"\tEpoch {epoch + 1}, complete!\tAverage Loss: {overall_loss / (batch_idx * cfg.hyperparameters.batch_size)}"
-        )
+        average_loss = overall_loss / (batch_idx * cfg.hyperparameters.batch_size)
+        log.info(f"\tEpoch {epoch + 1}, complete!\tAverage Loss: {average_loss}")
     log.info("Finish!!")
 
     # save weights

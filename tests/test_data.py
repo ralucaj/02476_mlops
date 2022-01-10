@@ -1,7 +1,9 @@
-from src.data.mnist import CorruptedMNIST
+import os
+
 import numpy as np
 import pytest
-import os
+
+from src.data.mnist import CorruptedMNIST
 
 
 @pytest.mark.skipif(
