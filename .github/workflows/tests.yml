@@ -35,8 +35,10 @@ jobs:
       id: cache
       with:
         path: ${{ matrix.path }}
-        key: ${{ matrix.os }}-pip-${{ hashFiles('requirements*.txt') }}
-        restore-keys: ${{ matrix.os }}-pip-
+        key: ${{ matrix.os }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements_dev.txt') }}
+        restore-keys: |
+          ${{ matrix.os }}-pip-${{ hashFiles('requirements.txt') }}-
+          ${{ matrix.os }}-pip-
 
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
