@@ -1,4 +1,4 @@
-name: "Run isort"
+name: "Run linters"
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -37,7 +37,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Lint with isort
+    - name: Lint with flake8
       run: |
-        pip install isort
-        isort .
+        pip install flake8
+        flake8 .
