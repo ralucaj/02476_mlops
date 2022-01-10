@@ -12,13 +12,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        include:
-        - os: ubuntu-latest
-          path: ~/.cache/pip
-        - os: macos-latest
-          path: ~/Library/Caches/pip
-        - os: windows-latest
-          path: ~\AppData\Local\pip\Cache
         python-version: ['3.8']
 
     steps:
@@ -34,7 +27,7 @@ jobs:
       uses: actions/cache@v2
       id: cache
       with:
-        path: ${{ matrix.path }}
+        path: ${{ env.pythonLocation }}
         key: ${{ matrix.os }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements_dev.txt') }}
         restore-keys: |
           ${{ matrix.os }}-pip-${{ hashFiles('requirements.txt') }}-
