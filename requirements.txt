@@ -20,5 +20,3 @@ hydra
 pillow
 pytorch_lightning
 wandb
-pytest
-coverage
