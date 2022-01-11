@@ -21,3 +21,5 @@ hydra-core
 pillow
 pytorch_lightning
 wandb
+google-api-python-client
+dvc[gs]
