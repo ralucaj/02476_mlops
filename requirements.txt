@@ -23,3 +23,5 @@ pytorch_lightning
 wandb
 google-api-python-client
 dvc[gs]
+torchserve
+torch-model-archiver
