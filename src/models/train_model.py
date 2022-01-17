@@ -41,5 +41,8 @@ def train(cfg):
     # Save model
     torch.save(model.state_dict(), cfg.training.model_path)
 
+    script_model = torch.jit.script(model)
+    script_model.save('deployable_model.pt')
+
 
 train()
